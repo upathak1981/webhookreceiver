@@ -20,10 +20,12 @@ def mongodb():
     uri = os.getenv('mongodburl')
 # Create a new client and connect to the server
     mongodbclient = MongoClient(uri, server_api=ServerApi('1'))
+    db = mongodbclient["sample_mflix"]
+    userslist = db["users"] 
+    print(userslist.find_one())
 # Send a ping to confirm a successful connection
     mongodbclient.admin.command('ping')
-    print("Pinged your deployment. You successfully connected to MongoDB!")
-    return "success"
+    return "See the log to see first record from user table"
 @app.route('/')
 def rootfunction():
     with open('samplepayload.json','r') as file:
