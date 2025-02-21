@@ -2,6 +2,8 @@ from flask import Flask, request, abort
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
 import json
+from dotenv import load_dotenv
+import os
 
 app = Flask(__name__)
 
@@ -14,13 +16,14 @@ def webhook():
         abort
 @app.route('/mongodb')
 def mongodb():
-    uri = "mongodb+srv://umangdpathak:mIRv2jEnbTwyRQlV@cluster0.mntny.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    load_dotenv()
+    uri = os.getenv('mongodburl')
 # Create a new client and connect to the server
     mongodbclient = MongoClient(uri, server_api=ServerApi('1'))
 # Send a ping to confirm a successful connection
     mongodbclient.admin.command('ping')
     print("Pinged your deployment. You successfully connected to MongoDB!")
-
+    return "success"
 @app.route('/')
 def rootfunction():
     with open('samplepayload.json','r') as file:
